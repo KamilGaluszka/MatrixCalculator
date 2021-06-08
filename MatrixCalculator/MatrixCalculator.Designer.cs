@@ -90,7 +90,7 @@ namespace MatrixCalculator
             this.Matrix1InputColumns.Size = new System.Drawing.Size(30, 22);
             this.Matrix1InputColumns.TabIndex = 3;
             this.Matrix1InputColumns.Text = "1";
-            this.Matrix1InputColumns.KeyUp += new System.Windows.Forms.KeyEventHandler(this.GenerateMatrix1ButtonOnClick);
+            this.Matrix1InputColumns.KeyUp += new System.Windows.Forms.KeyEventHandler((sender, e) => GenerateMatrixButtonOnClick(sender, e, "matrix1"));
             // 
             // Matrix1InputRows
             // 
@@ -100,7 +100,8 @@ namespace MatrixCalculator
             this.Matrix1InputRows.Size = new System.Drawing.Size(30, 22);
             this.Matrix1InputRows.TabIndex = 2;
             this.Matrix1InputRows.Text = "1";
-            this.Matrix1InputRows.KeyUp += new System.Windows.Forms.KeyEventHandler(this.GenerateMatrix1ButtonOnClick);
+            this.Matrix1InputRows.KeyUp += new System.Windows.Forms.KeyEventHandler((sender, e) => GenerateMatrixButtonOnClick(sender, e, "matrix1"));
+            //this.Matrix1InputRows.KeyUp += new System.Windows.Forms.KeyEventHandler(this.GenerateMatrixButtonOnClick);
             // 
             // Matrix1Columns
             // 

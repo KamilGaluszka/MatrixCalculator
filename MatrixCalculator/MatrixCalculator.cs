@@ -26,7 +26,7 @@ namespace MatrixCalculator
             
         }
 
-        private void GenerateMatrix1ButtonOnClick(object sender, EventArgs e)
+        private void GenerateMatrixButtonOnClick(object sender, EventArgs e, String name)
         {
             int rows = 0, columns = 0;
             if(int.TryParse(Matrix1InputRows.Text, out rows) && int.TryParse(Matrix1InputColumns.Text, out columns))
@@ -41,27 +41,53 @@ namespace MatrixCalculator
                     {
                         for (int j = 0; j < 5; j++)
                         {
-                            panel1.Controls.RemoveByKey("Matrix1" + i + "/" + j);
+                            if(name == "matrix1")
+                            {
+                                panel1.Controls.RemoveByKey(name + i + "/" + j);
+                            }
+                            else
+                            {
+                                panel2.Controls.RemoveByKey(name + i + "/" + j);
+                            }
                         }
                     }
-                    panel1.Controls.RemoveByKey("A = ");
+                    if(name == "matrix1")
+                    {
+                        panel1.Controls.RemoveByKey("A = ");
+                    }
+                    else
+                    {
+                        panel2.Controls.RemoveByKey("B = ");
+                    }
                     for (int i = 0; i < rows; i++)
                     {
                         for (int j = 0; j < columns; j++)
                         {
                             TextBox temp = new TextBox();
-                            temp.Name = "Matrix1" + i + "/" + j;
+                            temp.Name = name + i + "/" + j;
                             temp.Size = new Size(30, 22);
                             temp.Location = new Point(60 + temp.Size.Width * j + j * 6, 60 + temp.Size.Height * i + i * 6);
                             panel1.Controls.Add(temp);
                         }
                         Label label = new Label();
-                        label.Name = "A = ";
-                        label.Size = new Size(40, 180);
-                        label.Location = new Point(0, panel1.Height / 3);
-                        label.Text = "A = [";
-                        label.Font = new Font(label.Font.Name, 11.0F, label.Font.Style, label.Font.Unit);
-                        panel1.Controls.Add(label);
+                        if(name == "matrix1")
+                        {
+                            label.Name = "A = ";
+                            label.Size = new Size(40, 180);
+                            label.Location = new Point(0, panel1.Height / 3);
+                            label.Text = "A = [";
+                            label.Font = new Font(label.Font.Name, 11.0F, label.Font.Style, label.Font.Unit);
+                            panel1.Controls.Add(label);
+                        }
+                        else
+                        {
+                            label.Name = "B = ";
+                            label.Size = new Size(40, 180);
+                            label.Location = new Point(0, panel2.Height / 3);
+                            label.Text = "B = [";
+                            label.Font = new Font(label.Font.Name, 11.0F, label.Font.Style, label.Font.Unit);
+                            panel2.Controls.Add(label);
+                        }
                     }
                 }
             }
