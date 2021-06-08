@@ -43,7 +43,14 @@ namespace MatrixCalculator
             this.Subtraction = new System.Windows.Forms.Button();
             this.Addition = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.Matrix2Rows = new System.Windows.Forms.Label();
+            this.GenerateMatrix2Button = new System.Windows.Forms.Button();
+            this.Matrix2Columns = new System.Windows.Forms.Label();
+            this.Matrix2InputRows = new System.Windows.Forms.TextBox();
+            this.Matrix2InputColumns = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,13 +71,13 @@ namespace MatrixCalculator
             // GenerateMatrix1Button
             // 
             this.GenerateMatrix1Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.GenerateMatrix1Button.Location = new System.Drawing.Point(242, 3);
+            this.GenerateMatrix1Button.Location = new System.Drawing.Point(240, 3);
             this.GenerateMatrix1Button.Name = "GenerateMatrix1Button";
             this.GenerateMatrix1Button.Size = new System.Drawing.Size(105, 54);
             this.GenerateMatrix1Button.TabIndex = 5;
             this.GenerateMatrix1Button.Text = "Generate checksums";
             this.GenerateMatrix1Button.UseVisualStyleBackColor = true;
-            this.GenerateMatrix1Button.Click += new System.EventHandler(this.GenerateChecksumsMatrix1ButtonOnClick);
+            this.GenerateMatrix1Button.Click += new System.EventHandler((sender, e) => this.GenerateChecksumsButtonOnClick(sender, e, "matrix1"));
             // 
             // label1
             // 
@@ -90,7 +97,7 @@ namespace MatrixCalculator
             this.Matrix1InputColumns.Size = new System.Drawing.Size(30, 22);
             this.Matrix1InputColumns.TabIndex = 3;
             this.Matrix1InputColumns.Text = "1";
-            this.Matrix1InputColumns.KeyUp += new System.Windows.Forms.KeyEventHandler((sender, e) => GenerateMatrixButtonOnClick(sender, e, "matrix1"));
+            this.Matrix1InputColumns.KeyUp += new System.Windows.Forms.KeyEventHandler((sender, e) => this.GenerateMatrixButtonOnKeyUp(sender, e, "matrix1"));
             // 
             // Matrix1InputRows
             // 
@@ -100,8 +107,7 @@ namespace MatrixCalculator
             this.Matrix1InputRows.Size = new System.Drawing.Size(30, 22);
             this.Matrix1InputRows.TabIndex = 2;
             this.Matrix1InputRows.Text = "1";
-            this.Matrix1InputRows.KeyUp += new System.Windows.Forms.KeyEventHandler((sender, e) => GenerateMatrixButtonOnClick(sender, e, "matrix1"));
-            //this.Matrix1InputRows.KeyUp += new System.Windows.Forms.KeyEventHandler(this.GenerateMatrixButtonOnClick);
+            this.Matrix1InputRows.KeyUp += new System.Windows.Forms.KeyEventHandler((sender, e) => this.GenerateMatrixButtonOnKeyUp(sender, e, "matrix1"));
             // 
             // Matrix1Columns
             // 
@@ -126,6 +132,12 @@ namespace MatrixCalculator
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.label2);
+            this.panel2.Controls.Add(this.Matrix2InputColumns);
+            this.panel2.Controls.Add(this.Matrix2InputRows);
+            this.panel2.Controls.Add(this.Matrix2Columns);
+            this.panel2.Controls.Add(this.GenerateMatrix2Button);
+            this.panel2.Controls.Add(this.Matrix2Rows);
             this.panel2.Location = new System.Drawing.Point(438, 12);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(350, 350);
@@ -195,6 +207,67 @@ namespace MatrixCalculator
             this.panel4.Size = new System.Drawing.Size(776, 248);
             this.panel4.TabIndex = 2;
             // 
+            // Matrix2Rows
+            // 
+            this.Matrix2Rows.AutoSize = true;
+            this.Matrix2Rows.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.Matrix2Rows.Location = new System.Drawing.Point(3, 13);
+            this.Matrix2Rows.Name = "Matrix2Rows";
+            this.Matrix2Rows.Size = new System.Drawing.Size(57, 20);
+            this.Matrix2Rows.TabIndex = 6;
+            this.Matrix2Rows.Text = "Rows [";
+            // 
+            // GenerateMatrix2Button
+            // 
+            this.GenerateMatrix2Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.GenerateMatrix2Button.Location = new System.Drawing.Point(240, 3);
+            this.GenerateMatrix2Button.Name = "GenerateMatrix2Button";
+            this.GenerateMatrix2Button.Size = new System.Drawing.Size(105, 54);
+            this.GenerateMatrix2Button.TabIndex = 6;
+            this.GenerateMatrix2Button.Text = "Generate checksums";
+            this.GenerateMatrix2Button.UseVisualStyleBackColor = true;
+            this.GenerateMatrix2Button.Click += new System.EventHandler((sender, e) => this.GenerateChecksumsButtonOnClick(sender, e, "matrix2"));
+            // 
+            // Matrix2Columns
+            // 
+            this.Matrix2Columns.AutoSize = true;
+            this.Matrix2Columns.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.Matrix2Columns.Location = new System.Drawing.Point(157, 13);
+            this.Matrix2Columns.Name = "Matrix2Columns";
+            this.Matrix2Columns.Size = new System.Drawing.Size(79, 20);
+            this.Matrix2Columns.TabIndex = 6;
+            this.Matrix2Columns.Text = "] Columns";
+            // 
+            // Matrix2InputRows
+            // 
+            this.Matrix2InputRows.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.Matrix2InputRows.Location = new System.Drawing.Point(66, 13);
+            this.Matrix2InputRows.Name = "Matrix2InputRows";
+            this.Matrix2InputRows.Size = new System.Drawing.Size(30, 22);
+            this.Matrix2InputRows.TabIndex = 6;
+            this.Matrix2InputRows.Text = "1";
+            this.Matrix2InputRows.KeyUp += new System.Windows.Forms.KeyEventHandler((sender, e) => this.GenerateMatrixButtonOnKeyUp(sender, e, "matrix2"));
+            // 
+            // Matrix2InputColumns
+            // 
+            this.Matrix2InputColumns.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.Matrix2InputColumns.Location = new System.Drawing.Point(121, 13);
+            this.Matrix2InputColumns.Name = "Matrix2InputColumns";
+            this.Matrix2InputColumns.Size = new System.Drawing.Size(30, 22);
+            this.Matrix2InputColumns.TabIndex = 6;
+            this.Matrix2InputColumns.Text = "1";
+            this.Matrix2InputColumns.KeyUp += new System.Windows.Forms.KeyEventHandler((sender, e) => this.GenerateMatrixButtonOnKeyUp(sender, e, "matrix2"));
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label2.Location = new System.Drawing.Point(102, 13);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(13, 20);
+            this.label2.TabIndex = 6;
+            this.label2.Text = ",";
+            // 
             // MatrixCalculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -209,6 +282,8 @@ namespace MatrixCalculator
             this.Load += new System.EventHandler(this.MatrixCalculator_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -230,6 +305,11 @@ namespace MatrixCalculator
         private System.Windows.Forms.TextBox Matrix1InputRows;
         private System.Windows.Forms.Label Matrix1Columns;
         private System.Windows.Forms.Label Matrix1Rows;
+        private System.Windows.Forms.Button GenerateMatrix2Button;
+        private System.Windows.Forms.Label Matrix2Rows;
+        private System.Windows.Forms.TextBox Matrix2InputColumns;
+        private System.Windows.Forms.TextBox Matrix2InputRows;
+        private System.Windows.Forms.Label Matrix2Columns;
+        private System.Windows.Forms.Label label2;
     }
 }
-

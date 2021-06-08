@@ -25,21 +25,9 @@ namespace MatrixCalculator
 
         public void resizeMatrix(int row, int column)
         {
-            double[,] tempMatrixTable = MatrixTable;
-            double[] tempVerticalCheckSum = VerticalCheckSum;
-            double[] tempHorizontalCheckSum = HorizontalCheckSum;
             MatrixTable = new double[row, column];
             VerticalCheckSum = new double[column];
             HorizontalCheckSum = new double[row];
-            for (int i = 0; i < Rows; i++)
-            {
-                for(int j = 0; j < Columns; j++)
-                {
-                    MatrixTable[i, j] = tempMatrixTable[i, j];
-                    VerticalCheckSum[j] = tempVerticalCheckSum[j];
-                }
-                HorizontalCheckSum[i] = tempHorizontalCheckSum[i];
-            }
             Rows = row;
             Columns = column;
         }
