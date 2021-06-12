@@ -77,7 +77,7 @@ namespace MatrixCalculator
             this.GenerateMatrix1Button.TabIndex = 5;
             this.GenerateMatrix1Button.Text = "Generate checksums";
             this.GenerateMatrix1Button.UseVisualStyleBackColor = true;
-            this.GenerateMatrix1Button.Click += new System.EventHandler((sender, e) => this.GenerateChecksumsButtonOnClick(sender, e, "matrix1"));
+            this.GenerateMatrix1Button.Click += new System.EventHandler((sender, e) => this.GenerateChecksumsForMatrixButtonOnClick(sender, e, "matrix1"));
             // 
             // label1
             // 
@@ -186,7 +186,7 @@ namespace MatrixCalculator
             this.Subtraction.TabIndex = 4;
             this.Subtraction.Text = "-";
             this.Subtraction.UseVisualStyleBackColor = true;
-            this.Subtraction.Click += new System.EventHandler(this.SubtractionOnClick);
+            this.Subtraction.Click += new System.EventHandler((sender, e) => this.AdditionOrSubtractionOnClick(sender, e, true));
             // 
             // Addition
             // 
@@ -197,7 +197,7 @@ namespace MatrixCalculator
             this.Addition.TabIndex = 3;
             this.Addition.Text = "+";
             this.Addition.UseVisualStyleBackColor = true;
-            this.Addition.Click += new System.EventHandler(this.AdditionOnClick);
+            this.Addition.Click += new System.EventHandler((sender, e) => this.AdditionOrSubtractionOnClick(sender, e, false));
             // 
             // panel4
             // 
@@ -226,7 +226,7 @@ namespace MatrixCalculator
             this.GenerateMatrix2Button.TabIndex = 6;
             this.GenerateMatrix2Button.Text = "Generate checksums";
             this.GenerateMatrix2Button.UseVisualStyleBackColor = true;
-            this.GenerateMatrix2Button.Click += new System.EventHandler((sender, e) => this.GenerateChecksumsButtonOnClick(sender, e, "matrix2"));
+            this.GenerateMatrix2Button.Click += new System.EventHandler((sender, e) => this.GenerateChecksumsForMatrixButtonOnClick(sender, e, "matrix2"));
             // 
             // Matrix2Columns
             // 

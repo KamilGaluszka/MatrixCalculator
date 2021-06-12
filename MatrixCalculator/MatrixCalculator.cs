@@ -79,7 +79,7 @@ namespace MatrixCalculator
                 }
                 else
                 {
-                    ClearPanelFromInputs(panel, rows, columns, name, matrixName);
+                    ClearPanelFromInputs(panel, maxNumberOfRows, maxNumberOfRows, name, matrixName);
 
                     AddInputsToPanel(panel, rows, columns, name, matrixName);
                 }
@@ -96,9 +96,9 @@ namespace MatrixCalculator
             {
                 for (int j = 0; j < maxNumberOfColumns; j++)
                 {
-                    panel.Controls.RemoveByKey(name + "ChecksumVertical" + i + "/0");
+                    panel.Controls.RemoveByKey(name + "ChecksumHorizontal" + i + "/0");
                 }
-                panel.Controls.RemoveByKey(name + "ChecksumHorizontal" + "0/" + i);
+                panel.Controls.RemoveByKey(name + "ChecksumVertical" + "0/" + i);
             }
         }
 
@@ -140,11 +140,14 @@ namespace MatrixCalculator
                     }
                 }
                 Label label = new Label();
-                label.Name = name + "ChecksumVertical" + i + "/0";
+                label.Name = name + "ChecksumHorizontal" + i + "/0";
                 label.Size = new Size(30, 22);
                 label.Location = new Point(60 + label.Size.Width * 5 + 6 * 6, 60 + label.Size.Height * i + i * 6);
                 matrix.HorizontalCheckSum[i] = result;
                 label.Text = matrix.HorizontalCheckSum[i].ToString();
+                label.BorderStyle = BorderStyle.FixedSingle;
+                label.BackColor = Color.LightGreen;
+                label.TextAlign = ContentAlignment.MiddleCenter;
                 panel.Controls.Add(label);
             }
         }
@@ -167,16 +170,19 @@ namespace MatrixCalculator
                     }
                 }
                 Label label = new Label();
-                label.Name = name + "ChecksumHorizontal" + "0/" + i;
+                label.Name = name + "ChecksumVertical" + "0/" + i;
                 label.Size = new Size(30, 22);
                 label.Location = new Point(60 + label.Size.Width * i + i * 6, 60 + label.Size.Height * 5 + 6 * 6);
                 matrix.VerticalCheckSum[i] = result;
                 label.Text = matrix.VerticalCheckSum[i].ToString();
+                label.BorderStyle = BorderStyle.FixedSingle;
+                label.BackColor = Color.LightGreen;
+                label.TextAlign = ContentAlignment.MiddleCenter;
                 panel.Controls.Add(label);
             }
         }
 
-        private void GenerateChecksumsButtonOnClick(object sender, EventArgs e, String name)
+        private void GenerateChecksumsForMatrixButtonOnClick(object sender, EventArgs e, String name)
         {
             var rows = 0;
             var columns = 0;
@@ -210,34 +216,49 @@ namespace MatrixCalculator
             }
         }
 
-        private void MatrixAddition(Matrix matrix1, Matrix matrix2, Matrix result, int rows, int columns)
+        private void MatrixAdditionOrSubtraction(Matrix matrix1, Matrix matrix2, Matrix result, int rows, int columns, bool operation)
         {
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < columns; j++)
                 {
-                    result.MatrixTable[i, j] = matrix1.MatrixTable[i, j] + matrix2.MatrixTable[i, j];
+                    result.MatrixTable[i, j] = matrix1.MatrixTable[i, j] + matrix2.MatrixTable[i, j] * (operation ? -1 : 1);
                 }
             }
         }
 
-        private bool CheckIfChecksumsAreEqual(Matrix matrix1, Matrix matrix2, Matrix result, bool operation)
+        private bool CheckIfChecksumsAreEqual(Matrix matrix1, Matrix matrix2, Matrix result, Panel panel, String name, bool operation)
         {
             var rows = result.Rows;
             var columns = result.Columns;
+            var areEqual = true;
 
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < columns; j++)
                 {
                     if (matrix1.VerticalCheckSum[j] + matrix2.VerticalCheckSum[j] * (operation ? -1 : 1) != result.VerticalCheckSum[j])
-                        return false;
+                    {
+                        Control[] controls = panel.Controls.Find(name + "ChecksumVertical" + "0/" + j, true);
+                        if (controls.Length > 0)
+                        {
+                            controls[0].BackColor = Color.Red;
+                        }
+                        areEqual = false;
+                    }
                 }
                 if (matrix1.HorizontalCheckSum[i] + matrix2.HorizontalCheckSum[i] * (operation ? -1 : 1) != result.HorizontalCheckSum[i])
-                    return false;
+                {
+                    Control[] controls = panel.Controls.Find(name + "ChecksumHorizontal" + i + "/0", true);
+                    if (controls.Length > 0)
+                    {
+                        controls[0].BackColor = Color.Red;
+                    }
+                    areEqual = false;
+                }
             }
 
-            return true;
+            return areEqual;
         }
 
         private void AddLabelsToPanel(Matrix matrix, Panel panel, int rows, int columns, String name, String matrixName)
@@ -267,7 +288,17 @@ namespace MatrixCalculator
             panel.Controls.Add(label);
         }
 
-        private void AdditionOnClick(object sender, EventArgs e)
+        private void ClearPanelAndGenerateNewCheksums(Panel panel, int rows, int columns, String name, String matrixName)
+        {
+            ClearPanelFromInputs(panel, maxNumberOfRows, maxNumberOfRows, name, matrixName);
+            ClearPanelFromChecksums(panel, name);
+            AddLabelsToPanel(result, panel, rows, columns, name, matrixName);
+
+            GenerateVerticalChecksums(result, panel, rows, columns, name);
+            GenerateHorizontalChecksums(result, panel, rows, columns, name);
+        }
+
+        private void AdditionOrSubtractionOnClick(object sender, EventArgs e, bool operation)
         {
             if (matrix1.Columns != matrix2.Columns || matrix1.Rows != matrix2.Rows)
             {
@@ -279,33 +310,82 @@ namespace MatrixCalculator
                 var columns = matrix1.Columns;
                 var name = "result";
                 var matrixName = "C = ";
+                var panel = panel4;
 
                 result.resizeMatrix(rows, columns);
 
-                MatrixAddition(matrix1, matrix2, result, rows, columns);
+                MatrixAdditionOrSubtraction(matrix1, matrix2, result, rows, columns, operation);
 
-                ClearPanelFromInputs(panel4, rows, columns, name, matrixName);
-                ClearPanelFromChecksums(panel4, name);
-                AddLabelsToPanel(result, panel4, rows, columns, name, matrixName);
+                ClearPanelAndGenerateNewCheksums(panel, rows, columns, name, matrixName);
 
-                GenerateVerticalChecksums(result, panel4, rows, columns, name);
-                GenerateHorizontalChecksums(result, panel4, rows, columns, name);
-
-                if (CheckIfChecksumsAreEqual(matrix1, matrix2, result, false))
+                if (CheckIfChecksumsAreEqual(matrix1, matrix2, result, panel, name, operation))
                     MessageBox.Show("Checksums are equal");
                 else
                     MessageBox.Show("Checksums are NOT equal");
             }
         }
 
-        private void SubtractionOnClick(object sender, EventArgs e)
+        private void MatrixMatrixMultiplication(Matrix matrix1, Matrix matrix2, Matrix result, int rows, int columns)
         {
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    var temp = 0d;
+                    for (int k = 0; k < matrix2.Rows; k++)
+                    {
+                        temp += matrix1.MatrixTable[i, k] * matrix2.MatrixTable[k, j];
+                    }
+                    result.MatrixTable[i, j] = temp;
+                }
+            }
+        }
 
+        private void MatrixScalarMultiplication(Matrix matrix1, Matrix matrix2, Matrix result, int rows, int columns)
+        {
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    result.MatrixTable[i, j] = matrix1.MatrixTable[i, j] * matrix2.MatrixTable[0, 0];
+                }
+            }
         }
 
         private void MultiplicationOnClick(object sender, EventArgs e)
         {
+            if(matrix1.Columns == matrix2.Rows && matrix1.Rows == matrix2.Columns)
+            {
+                var rows = matrix1.Rows;
+                var columns = matrix2.Columns;
+                var name = "result";
+                var matrixName = "C = ";
+                var panel = panel4;
 
+                result.resizeMatrix(rows, columns);
+
+                MatrixMatrixMultiplication(matrix1, matrix2, result, rows, columns);
+
+                ClearPanelAndGenerateNewCheksums(panel, rows, columns, name, matrixName);
+            }
+            else if(matrix2.Columns == 1 && matrix2.Rows == 1)
+            {
+                var rows = matrix1.Rows;
+                var columns = matrix1.Columns;
+                var name = "result";
+                var matrixName = "C = ";
+                var panel = panel4;
+
+                result.resizeMatrix(rows, columns);
+
+                MatrixScalarMultiplication(matrix1, matrix2, result, rows, columns);
+
+                ClearPanelAndGenerateNewCheksums(panel, rows, columns, name, matrixName);
+            }
+            else
+            {
+                MessageBox.Show("You cannot multiply those matrixes");
+            }
         }
 
         private void ReplacementOnClick(object sender, EventArgs e)
