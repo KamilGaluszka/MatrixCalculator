@@ -1,23 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MatrixCalculator
 {
     public partial class MatrixCalculator : Form
     {
-        Matrix matrix1 = new Matrix();
-        Matrix matrix2 = new Matrix();
-        Matrix result = new Matrix();
-        int maxNumberOfRows = 5;
-        int maxNumberOfColumns = 5;
+        private readonly Matrix _matrix1 = new Matrix();
+        private readonly Matrix _matrix2 = new Matrix();
+        private readonly Matrix _result = new Matrix();
+        private readonly int _maxNumberOfRows = 5;
+        private readonly int _maxNumberOfColumns = 5;
 
         public MatrixCalculator()
         {
@@ -29,11 +23,11 @@ namespace MatrixCalculator
 
         }
 
-        private void ClearPanelFromInputs(Panel panel, int rows, int columns, String name, String matrixName)
+        private void ClearPanelFromInputs(Panel panel, int rows, int columns, string name, string matrixName)
         {
-            for (int i = 0; i < maxNumberOfRows; i++)
+            for (int i = 0; i < _maxNumberOfRows; i++)
             {
-                for (int j = 0; j < maxNumberOfColumns; j++)
+                for (int j = 0; j < _maxNumberOfColumns; j++)
                 {
                     panel.Controls.RemoveByKey(name + i + "/" + j);
                 }
@@ -41,45 +35,47 @@ namespace MatrixCalculator
             panel.Controls.RemoveByKey(matrixName);
         }
 
-        private void AddInputsToPanel(Panel panel, int rows, int columns, String name, String matrixName)
+        private void AddInputsToPanel(Panel panel, int rows, int columns, string name, string matrixName)
         {
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < columns; j++)
                 {
-                    TextBox temp = new TextBox();
-                    temp.Name = name + i + "/" + j;
-                    temp.Size = new Size(30, 22);
+                    var temp = new TextBox
+                    {
+                        Name = name + i + "/" + j,
+                        Size = new Size(30, 22)
+                    };
                     temp.Location = new Point(60 + temp.Size.Width * j + j * 6, 60 + temp.Size.Height * i + i * 6);
                     panel.Controls.Add(temp);
                 }
             }
-            Label label = new Label();
-            label.Name = matrixName;
-            label.Size = new Size(40, 180);
-            label.Location = new Point(0, panel1.Height / 3);
-            label.Text = matrixName;
+            var label = new Label
+            {
+                Name = matrixName,
+                Size = new Size(40, 180),
+                Location = new Point(0, panel1.Height / 3),
+                Text = matrixName
+            };
             panel.Controls.Add(label);
         }
 
-        private void GenerateMatrixButtonOnKeyUp(object sender, EventArgs e, String name)
+        private void GenerateMatrixButtonOnKeyUp(object sender, EventArgs e, string name)
         {
-            var rows = 0;
-            var columns = 0;
             var inputRows = name == "matrix1" ? Matrix1InputRows : Matrix2InputRows;
             var inputColumns = name == "matrix1" ? Matrix1InputColumns : Matrix2InputColumns;
             var panel = name == "matrix1" ? panel1 : panel2;
             var matrixName = name == "matrix1" ? "A = " : "B = ";
 
-            if (int.TryParse(inputRows.Text, out rows) && int.TryParse(inputColumns.Text, out columns))
+            if (int.TryParse(inputRows.Text, out var rows) && int.TryParse(inputColumns.Text, out var columns))
             {
-                if (rows > maxNumberOfRows || columns > maxNumberOfColumns)
+                if (rows > _maxNumberOfRows || columns > _maxNumberOfColumns)
                 {
-                    MessageBox.Show("The maximum size of the matrix must be " + maxNumberOfRows + "x" + maxNumberOfColumns);
+                    MessageBox.Show("The maximum size of the matrix must be " + _maxNumberOfRows + "x" + _maxNumberOfColumns);
                 }
                 else
                 {
-                    ClearPanelFromInputs(panel, maxNumberOfRows, maxNumberOfRows, name, matrixName);
+                    ClearPanelFromInputs(panel, _maxNumberOfRows, _maxNumberOfRows, name, matrixName);
 
                     AddInputsToPanel(panel, rows, columns, name, matrixName);
                 }
@@ -90,11 +86,11 @@ namespace MatrixCalculator
             }
         }
 
-        private void ClearPanelFromChecksums(Panel panel, String name)
+        private void ClearPanelFromChecksums(Panel panel, string name)
         {
-            for (int i = 0; i < maxNumberOfRows; i++)
+            for (int i = 0; i < _maxNumberOfRows; i++)
             {
-                for (int j = 0; j < maxNumberOfColumns; j++)
+                for (int j = 0; j < _maxNumberOfColumns; j++)
                 {
                     panel.Controls.RemoveByKey(name + "ChecksumHorizontal" + i + "/0");
                 }
@@ -102,9 +98,8 @@ namespace MatrixCalculator
             }
         }
 
-        private void SetValuesOfMatrixFromInputs(Matrix matrix, Panel panel, int rows, int columns, String name)
+        private void SetValuesOfMatrixFromInputs(Matrix matrix, Panel panel, int rows, int columns, string name)
         {
-            var value = 0d;
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < columns; j++)
@@ -112,7 +107,7 @@ namespace MatrixCalculator
                     Control[] controls = panel.Controls.Find(name + i + "/" + j, true);
                     if (controls.Length > 0)
                     {
-                        if (Double.TryParse(controls[0].Text, out value))
+                        if (Double.TryParse(controls[0].Text, out double value))
                         {
                             matrix.MatrixTable[i, j] = value;
                         }
@@ -121,27 +116,27 @@ namespace MatrixCalculator
             }
         }
 
-        private void GenerateHorizontalChecksums(Matrix matrix, Panel panel, int rows, int columns, String name)
+        private void GenerateHorizontalChecksums(Matrix matrix, Panel panel, int rows, int columns, string name)
         {
             for (int i = 0; i < rows; i++)
             {
                 var result = 0d;
-                var value = 0d;
-
                 for (int j = 0; j < columns; j++)
                 {
                     Control[] controls = panel.Controls.Find(name + i + "/" + j, true);
                     if (controls.Length > 0)
                     {
-                        if (Double.TryParse(controls[0].Text, out value))
+                        if (Double.TryParse(controls[0].Text, out double value))
                         {
                             result += value;
                         }
                     }
                 }
-                Label label = new Label();
-                label.Name = name + "ChecksumHorizontal" + i + "/0";
-                label.Size = new Size(30, 22);
+                Label label = new Label
+                {
+                    Name = name + "ChecksumHorizontal" + i + "/0",
+                    Size = new Size(30, 22)
+                };
                 label.Location = new Point(60 + label.Size.Width * 5 + 6 * 6, 60 + label.Size.Height * i + i * 6);
                 matrix.HorizontalCheckSum[i] = result;
                 label.Text = matrix.HorizontalCheckSum[i].ToString();
@@ -152,26 +147,28 @@ namespace MatrixCalculator
             }
         }
 
-        private void GenerateVerticalChecksums(Matrix matrix, Panel panel, int rows, int columns, String name)
+        private void GenerateVerticalChecksums(Matrix matrix, Panel panel, int rows, int columns, string name)
         {
             for (int i = 0; i < columns; i++)
             {
                 double result = 0;
-                double value = 0;
                 for (int j = 0; j < rows; j++)
                 {
                     Control[] controls = panel.Controls.Find(name + j + "/" + i, true);
                     if (controls.Length > 0)
                     {
+                        double value;
                         if (Double.TryParse(controls[0].Text, out value))
                         {
                             result += value;
                         }
                     }
                 }
-                Label label = new Label();
-                label.Name = name + "ChecksumVertical" + "0/" + i;
-                label.Size = new Size(30, 22);
+                Label label = new Label
+                {
+                    Name = name + "ChecksumVertical" + "0/" + i,
+                    Size = new Size(30, 22)
+                };
                 label.Location = new Point(60 + label.Size.Width * i + i * 6, 60 + label.Size.Height * 5 + 6 * 6);
                 matrix.VerticalCheckSum[i] = result;
                 label.Text = matrix.VerticalCheckSum[i].ToString();
@@ -182,18 +179,16 @@ namespace MatrixCalculator
             }
         }
 
-        private void GenerateChecksumsForMatrixButtonOnClick(object sender, EventArgs e, String name)
+        private void GenerateChecksumsForMatrixButtonOnClick(object sender, EventArgs e, string name)
         {
-            var rows = 0;
-            var columns = 0;
             var inputRows = name == "matrix1" ? Matrix1InputRows : Matrix2InputRows;
             var inputColumns = name == "matrix1" ? Matrix1InputColumns : Matrix2InputColumns;
             var panel = name == "matrix1" ? panel1 : panel2;
-            var matrix = name == "matrix1" ? matrix1 : matrix2;
+            var matrix = name == "matrix1" ? _matrix1 : _matrix2;
 
-            if (int.TryParse(inputRows.Text, out rows) && int.TryParse(inputColumns.Text, out columns))
+            if (int.TryParse(inputRows.Text, out int rows) && int.TryParse(inputColumns.Text, out int columns))
             {
-                if (rows > maxNumberOfRows || columns > maxNumberOfColumns)
+                if (rows > _maxNumberOfRows || columns > _maxNumberOfColumns)
                 {
                     MessageBox.Show("The maximum size of the matrix must be 5x5");
                 }
@@ -227,7 +222,7 @@ namespace MatrixCalculator
             }
         }
 
-        private bool CheckIfChecksumsAreEqual(Matrix matrix1, Matrix matrix2, Matrix result, Panel panel, String name, bool operation)
+        private bool CheckIfChecksumsAreEqual(Matrix matrix1, Matrix matrix2, Matrix result, Panel panel, string name, bool operation)
         {
             var rows = result.Rows;
             var columns = result.Columns;
@@ -261,7 +256,7 @@ namespace MatrixCalculator
             return areEqual;
         }
 
-        private void AddLabelsToPanel(Matrix matrix, Panel panel, int rows, int columns, String name, String matrixName)
+        private void AddLabelsToPanel(Matrix matrix, Panel panel, int rows, int columns, string name, string matrixName)
         {
             for (int i = 0; i < rows; i++)
             {
@@ -286,9 +281,9 @@ namespace MatrixCalculator
             panel.Controls.Add(label);
         }
 
-        private void ClearPanelAndGenerateNewCheksums(Matrix matrix, Panel panel, int rows, int columns, String name, String matrixName)
+        private void ClearPanelAndGenerateNewCheksums(Matrix matrix, Panel panel, int rows, int columns, string name, string matrixName)
         {
-            ClearPanelFromInputs(panel, maxNumberOfRows, maxNumberOfRows, name, matrixName);
+            ClearPanelFromInputs(panel, _maxNumberOfRows, _maxNumberOfRows, name, matrixName);
             ClearPanelFromChecksums(panel, name);
             AddLabelsToPanel(matrix, panel, rows, columns, name, matrixName);
 
@@ -298,25 +293,25 @@ namespace MatrixCalculator
 
         private void AdditionOrSubtractionOnClick(object sender, EventArgs e, bool operation)
         {
-            if (matrix1.Columns != matrix2.Columns || matrix1.Rows != matrix2.Rows)
+            if (_matrix1.Columns != _matrix2.Columns || _matrix1.Rows != _matrix2.Rows)
             {
                 MessageBox.Show("Matrixes must be the same size");
             }
             else
             {
-                var rows = matrix1.Rows;
-                var columns = matrix1.Columns;
+                var rows = _matrix1.Rows;
+                var columns = _matrix1.Columns;
                 var name = "result";
                 var matrixName = "C = ";
                 var panel = panel4;
 
-                result.resizeMatrix(rows, columns);
+                _result.resizeMatrix(rows, columns);
 
-                MatrixAdditionOrSubtraction(matrix1, matrix2, result, rows, columns, operation);
+                MatrixAdditionOrSubtraction(_matrix1, _matrix2, _result, rows, columns, operation);
 
-                ClearPanelAndGenerateNewCheksums(result, panel, rows, columns, name, matrixName);
+                ClearPanelAndGenerateNewCheksums(_result, panel, rows, columns, name, matrixName);
 
-                if (CheckIfChecksumsAreEqual(matrix1, matrix2, result, panel, name, operation))
+                if (CheckIfChecksumsAreEqual(_matrix1, _matrix2, _result, panel, name, operation))
                     MessageBox.Show("Checksums are equal");
                 else
                     MessageBox.Show("Checksums are NOT equal");
@@ -352,33 +347,33 @@ namespace MatrixCalculator
 
         private void MultiplicationOnClick(object sender, EventArgs e)
         {
-            if (matrix1.Columns == matrix2.Rows && matrix1.Rows == matrix2.Columns)
+            if (_matrix1.Columns == _matrix2.Rows && _matrix1.Rows == _matrix2.Columns)
             {
-                var rows = matrix1.Rows;
-                var columns = matrix2.Columns;
+                var rows = _matrix1.Rows;
+                var columns = _matrix2.Columns;
                 var name = "result";
                 var matrixName = "C = ";
                 var panel = panel4;
 
-                result.resizeMatrix(rows, columns);
+                _result.resizeMatrix(rows, columns);
 
-                MatrixMatrixMultiplication(matrix1, matrix2, result, rows, columns);
+                MatrixMatrixMultiplication(_matrix1, _matrix2, _result, rows, columns);
 
-                ClearPanelAndGenerateNewCheksums(result, panel, rows, columns, name, matrixName);
+                ClearPanelAndGenerateNewCheksums(_result, panel, rows, columns, name, matrixName);
             }
-            else if (matrix2.Columns == 1 && matrix2.Rows == 1)
+            else if (_matrix2.Columns == 1 && _matrix2.Rows == 1)
             {
-                var rows = matrix1.Rows;
-                var columns = matrix1.Columns;
+                var rows = _matrix1.Rows;
+                var columns = _matrix1.Columns;
                 var name = "result";
                 var matrixName = "C = ";
                 var panel = panel4;
 
-                result.resizeMatrix(rows, columns);
+                _result.resizeMatrix(rows, columns);
 
-                MatrixScalarMultiplication(matrix1, matrix2, result, rows, columns);
+                MatrixScalarMultiplication(_matrix1, _matrix2, _result, rows, columns);
 
-                ClearPanelAndGenerateNewCheksums(result, panel, rows, columns, name, matrixName);
+                ClearPanelAndGenerateNewCheksums(_result, panel, rows, columns, name, matrixName);
             }
             else
             {
@@ -397,18 +392,25 @@ namespace MatrixCalculator
             }
         }
 
-        private void LoadMatrixOnClick(object sender, EventArgs e, String name)
+        private void LoadMatrixOnClick(object sender, EventArgs e, string name)
         {
             fileMatrix.ShowDialog();
 
             var fileName = fileMatrix.FileName;
-            var file = File.ReadAllLines(fileName);
-            var rows = 0;
-            var columns = 0;
+            string[] fileContent;
 
-            if (int.TryParse(file[0], out rows) && int.TryParse(file[1], out columns))
+            try
             {
-                if (rows > maxNumberOfRows || columns > maxNumberOfColumns)
+                fileContent = File.ReadAllLines(fileName);
+            }
+            catch
+            {
+                return;
+            }
+
+            if (int.TryParse(fileContent[0], out var rows) && int.TryParse(fileContent[1], out var columns))
+            {
+                if (rows > _maxNumberOfRows || columns > _maxNumberOfColumns)
                 {
                     MessageBox.Show("The maximum size of the matrix must be 5x5");
                 }
@@ -417,12 +419,12 @@ namespace MatrixCalculator
                     var inputRows = name == "matrix1" ? Matrix1InputRows : Matrix2InputRows;
                     var inputColumns = name == "matrix1" ? Matrix1InputColumns : Matrix2InputColumns;
                     var panel = name == "matrix1" ? panel1 : panel2;
-                    var matrix = name == "matrix1" ? matrix1 : matrix2;
+                    var matrix = name == "matrix1" ? _matrix1 : _matrix2;
                     var matrixName = name == "matrix1" ? "A = " : "B = ";
 
                     matrix.resizeMatrix(rows, columns);
 
-                    LoadDataToMatrix(matrix, rows, columns, file);
+                    LoadDataToMatrix(matrix, rows, columns, fileContent);
 
                     ClearPanelAndGenerateNewCheksums(matrix, panel, rows, columns, name, matrixName);
 
@@ -460,14 +462,14 @@ namespace MatrixCalculator
                 Stream fileStream = saveResult.OpenFile();
                 StreamWriter sw = new StreamWriter(fileStream);
 
-                sw.WriteLine(result.Rows);
-                sw.WriteLine(result.Columns);
+                sw.WriteLine(_result.Rows);
+                sw.WriteLine(_result.Columns);
 
-                for (int i = 0; i < result.Rows; i++)
+                for (int i = 0; i < _result.Rows; i++)
                 {
-                    for (int j = 0; j < result.Columns; j++)
+                    for (int j = 0; j < _result.Columns; j++)
                     {
-                        sw.WriteLine(result.MatrixTable[i, j]);
+                        sw.WriteLine(_result.MatrixTable[i, j]);
                     }
                 }
 
