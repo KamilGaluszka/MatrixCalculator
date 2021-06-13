@@ -23,7 +23,7 @@ namespace MatrixCalculator
 
         }
 
-        private void ClearPanelFromInputs(Panel panel, int rows, int columns, string name, string matrixName)
+        private void ClearPanelFromInputs(Panel panel, MatrixType name, string matrixName)
         {
             for (int i = 0; i < _maxNumberOfRows; i++)
             {
@@ -35,7 +35,7 @@ namespace MatrixCalculator
             panel.Controls.RemoveByKey(matrixName);
         }
 
-        private void AddInputsToPanel(Panel panel, int rows, int columns, string name, string matrixName)
+        private void AddInputsToPanel(Panel panel, int rows, int columns, MatrixType name, string matrixName)
         {
             for (int i = 0; i < rows; i++)
             {
@@ -60,12 +60,12 @@ namespace MatrixCalculator
             panel.Controls.Add(label);
         }
 
-        private void GenerateMatrixButtonOnKeyUp(object sender, EventArgs e, string name)
+        private void GenerateMatrixButtonOnKeyUp(object sender, EventArgs e, MatrixType name)
         {
-            var inputRows = name == "matrix1" ? Matrix1InputRows : Matrix2InputRows;
-            var inputColumns = name == "matrix1" ? Matrix1InputColumns : Matrix2InputColumns;
-            var panel = name == "matrix1" ? panel1 : panel2;
-            var matrixName = name == "matrix1" ? "A = " : "B = ";
+            var inputRows = name == MatrixType.Matrix1 ? Matrix1InputRows : Matrix2InputRows;
+            var inputColumns = name == MatrixType.Matrix1 ? Matrix1InputColumns : Matrix2InputColumns;
+            var panel = name == MatrixType.Matrix1 ? panel1 : panel2;
+            var matrixName = name == MatrixType.Matrix1 ? "A = " : "B = ";
 
             if (int.TryParse(inputRows.Text, out var rows) && int.TryParse(inputColumns.Text, out var columns))
             {
@@ -75,7 +75,7 @@ namespace MatrixCalculator
                 }
                 else
                 {
-                    ClearPanelFromInputs(panel, _maxNumberOfRows, _maxNumberOfRows, name, matrixName);
+                    ClearPanelFromInputs(panel, name, matrixName);
 
                     AddInputsToPanel(panel, rows, columns, name, matrixName);
                 }
@@ -86,7 +86,7 @@ namespace MatrixCalculator
             }
         }
 
-        private void ClearPanelFromChecksums(Panel panel, string name)
+        private void ClearPanelFromChecksums(Panel panel, MatrixType name)
         {
             for (int i = 0; i < _maxNumberOfRows; i++)
             {
@@ -98,7 +98,7 @@ namespace MatrixCalculator
             }
         }
 
-        private void SetValuesOfMatrixFromInputs(Matrix matrix, Panel panel, int rows, int columns, string name)
+        private void SetValuesOfMatrixFromInputs(Matrix matrix, Panel panel, int rows, int columns, MatrixType name)
         {
             for (int i = 0; i < rows; i++)
             {
@@ -116,7 +116,7 @@ namespace MatrixCalculator
             }
         }
 
-        private void GenerateHorizontalChecksums(Matrix matrix, Panel panel, int rows, int columns, string name)
+        private void GenerateHorizontalChecksums(Matrix matrix, Panel panel, int rows, int columns, MatrixType name)
         {
             for (int i = 0; i < rows; i++)
             {
@@ -147,7 +147,7 @@ namespace MatrixCalculator
             }
         }
 
-        private void GenerateVerticalChecksums(Matrix matrix, Panel panel, int rows, int columns, string name)
+        private void GenerateVerticalChecksums(Matrix matrix, Panel panel, int rows, int columns, MatrixType name)
         {
             for (int i = 0; i < columns; i++)
             {
@@ -179,12 +179,12 @@ namespace MatrixCalculator
             }
         }
 
-        private void GenerateChecksumsForMatrixButtonOnClick(object sender, EventArgs e, string name)
+        private void GenerateChecksumsForMatrixButtonOnClick(object sender, EventArgs e, MatrixType name)
         {
-            var inputRows = name == "matrix1" ? Matrix1InputRows : Matrix2InputRows;
-            var inputColumns = name == "matrix1" ? Matrix1InputColumns : Matrix2InputColumns;
-            var panel = name == "matrix1" ? panel1 : panel2;
-            var matrix = name == "matrix1" ? _matrix1 : _matrix2;
+            var inputRows = name == MatrixType.Matrix1 ? Matrix1InputRows : Matrix2InputRows;
+            var inputColumns = name == MatrixType.Matrix1 ? Matrix1InputColumns : Matrix2InputColumns;
+            var panel = name == MatrixType.Matrix1 ? panel1 : panel2;
+            var matrix = name == MatrixType.Matrix1 ? _matrix1 : _matrix2;
 
             if (int.TryParse(inputRows.Text, out int rows) && int.TryParse(inputColumns.Text, out int columns))
             {
@@ -222,7 +222,7 @@ namespace MatrixCalculator
             }
         }
 
-        private bool CheckIfChecksumsAreEqual(Matrix matrix1, Matrix matrix2, Matrix result, Panel panel, string name, bool operation)
+        private bool CheckIfChecksumsAreEqual(Matrix matrix1, Matrix matrix2, Matrix result, Panel panel, MatrixType name, bool operation)
         {
             var rows = result.Rows;
             var columns = result.Columns;
@@ -256,7 +256,7 @@ namespace MatrixCalculator
             return areEqual;
         }
 
-        private void AddLabelsToPanel(Matrix matrix, Panel panel, int rows, int columns, string name, string matrixName)
+        private void AddLabelsToPanel(Matrix matrix, Panel panel, int rows, int columns, MatrixType name, string matrixName)
         {
             for (int i = 0; i < rows; i++)
             {
@@ -281,9 +281,9 @@ namespace MatrixCalculator
             panel.Controls.Add(label);
         }
 
-        private void ClearPanelAndGenerateNewCheksums(Matrix matrix, Panel panel, int rows, int columns, string name, string matrixName)
+        private void ClearPanelAndGenerateNewCheksums(Matrix matrix, Panel panel, int rows, int columns, MatrixType name, string matrixName)
         {
-            ClearPanelFromInputs(panel, _maxNumberOfRows, _maxNumberOfRows, name, matrixName);
+            ClearPanelFromInputs(panel, name, matrixName);
             ClearPanelFromChecksums(panel, name);
             AddLabelsToPanel(matrix, panel, rows, columns, name, matrixName);
 
@@ -301,7 +301,7 @@ namespace MatrixCalculator
             {
                 var rows = _matrix1.Rows;
                 var columns = _matrix1.Columns;
-                var name = "result";
+                var name = MatrixType.Result;
                 var matrixName = "C = ";
                 var panel = panel4;
 
@@ -351,7 +351,7 @@ namespace MatrixCalculator
             {
                 var rows = _matrix1.Rows;
                 var columns = _matrix2.Columns;
-                var name = "result";
+                var name = MatrixType.Result;
                 var matrixName = "C = ";
                 var panel = panel4;
 
@@ -365,7 +365,7 @@ namespace MatrixCalculator
             {
                 var rows = _matrix1.Rows;
                 var columns = _matrix1.Columns;
-                var name = "result";
+                var name = MatrixType.Result;
                 var matrixName = "C = ";
                 var panel = panel4;
 
@@ -392,7 +392,7 @@ namespace MatrixCalculator
             }
         }
 
-        private void LoadMatrixOnClick(object sender, EventArgs e, string name)
+        private void LoadMatrixOnClick(object sender, EventArgs e, MatrixType name)
         {
             fileMatrix.ShowDialog();
 
@@ -416,11 +416,11 @@ namespace MatrixCalculator
                 }
                 else
                 {
-                    var inputRows = name == "matrix1" ? Matrix1InputRows : Matrix2InputRows;
-                    var inputColumns = name == "matrix1" ? Matrix1InputColumns : Matrix2InputColumns;
-                    var panel = name == "matrix1" ? panel1 : panel2;
-                    var matrix = name == "matrix1" ? _matrix1 : _matrix2;
-                    var matrixName = name == "matrix1" ? "A = " : "B = ";
+                    var inputRows = name == MatrixType.Matrix1 ? Matrix1InputRows : Matrix2InputRows;
+                    var inputColumns = name == MatrixType.Matrix1 ? Matrix1InputColumns : Matrix2InputColumns;
+                    var panel = name == MatrixType.Matrix1 ? panel1 : panel2;
+                    var matrix = name == MatrixType.Matrix1 ? _matrix1 : _matrix2;
+                    var matrixName = name == MatrixType.Matrix1 ? "A = " : "B = ";
 
                     matrix.resizeMatrix(rows, columns);
 
@@ -450,12 +450,14 @@ namespace MatrixCalculator
 
         private void SaveResultOnClick(object sender, EventArgs e)
         {
-            SaveFileDialog saveResult = new SaveFileDialog();
-            saveResult.InitialDirectory = @"C:\";
-            saveResult.RestoreDirectory = true;
-            saveResult.FileName = "result.txt";
-            saveResult.DefaultExt = "txt";
-            saveResult.Filter = "txt files (*.txt)|*.txt";
+            SaveFileDialog saveResult = new SaveFileDialog
+            {
+                InitialDirectory = @"C:\",
+                RestoreDirectory = true,
+                FileName = "result.txt",
+                DefaultExt = "txt",
+                Filter = "txt files (*.txt)|*.txt"
+            };
 
             if (saveResult.ShowDialog() == DialogResult.OK)
             {

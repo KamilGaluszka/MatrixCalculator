@@ -53,6 +53,7 @@
     <Compile Include="MatrixCalculator.Designer.cs">
       <DependentUpon>MatrixCalculator.cs</DependentUpon>
     </Compile>
+    <Compile Include="MatrixType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MatrixCalculator.resx">

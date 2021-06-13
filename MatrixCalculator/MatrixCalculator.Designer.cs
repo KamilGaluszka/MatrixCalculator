@@ -83,7 +83,7 @@
             this.LoadMatrix1Button.TabIndex = 7;
             this.LoadMatrix1Button.Text = "Load Matrix1";
             this.LoadMatrix1Button.UseVisualStyleBackColor = true;
-            this.LoadMatrix1Button.Click += new System.EventHandler((sender, e) => this.LoadMatrixOnClick(sender, e, "matrix1"));
+            this.LoadMatrix1Button.Click += new System.EventHandler((sender, e) => this.LoadMatrixOnClick(sender, e, MatrixType.Matrix1));
             // 
             // GenerateMatrix1Button
             // 
@@ -94,7 +94,7 @@
             this.GenerateMatrix1Button.TabIndex = 5;
             this.GenerateMatrix1Button.Text = "Generate checksums";
             this.GenerateMatrix1Button.UseVisualStyleBackColor = true;
-            this.GenerateMatrix1Button.Click += new System.EventHandler((sender, e) => this.GenerateChecksumsForMatrixButtonOnClick(sender, e, "matrix1"));
+            this.GenerateMatrix1Button.Click += new System.EventHandler((sender, e) => this.GenerateChecksumsForMatrixButtonOnClick(sender, e, MatrixType.Matrix1));
             // 
             // label1
             // 
@@ -114,7 +114,7 @@
             this.Matrix1InputColumns.Size = new System.Drawing.Size(30, 22);
             this.Matrix1InputColumns.TabIndex = 3;
             this.Matrix1InputColumns.Text = "1";
-            this.Matrix1InputColumns.KeyUp += new System.Windows.Forms.KeyEventHandler((sender, e) => this.GenerateMatrixButtonOnKeyUp(sender, e, "matrix1"));
+            this.Matrix1InputColumns.KeyUp += new System.Windows.Forms.KeyEventHandler((sender, e) => this.GenerateMatrixButtonOnKeyUp(sender, e, MatrixType.Matrix1));
             // 
             // Matrix1InputRows
             // 
@@ -124,7 +124,7 @@
             this.Matrix1InputRows.Size = new System.Drawing.Size(30, 22);
             this.Matrix1InputRows.TabIndex = 2;
             this.Matrix1InputRows.Text = "1";
-            this.Matrix1InputRows.KeyUp += new System.Windows.Forms.KeyEventHandler((sender, e) => this.GenerateMatrixButtonOnKeyUp(sender, e, "matrix1"));
+            this.Matrix1InputRows.KeyUp += new System.Windows.Forms.KeyEventHandler((sender, e) => this.GenerateMatrixButtonOnKeyUp(sender, e, MatrixType.Matrix1));
             // 
             // Matrix1Columns
             // 
@@ -170,7 +170,7 @@
             this.LoadMatrix2Button.TabIndex = 8;
             this.LoadMatrix2Button.Text = "Load Matrix2";
             this.LoadMatrix2Button.UseVisualStyleBackColor = true;
-            this.LoadMatrix2Button.Click += new System.EventHandler((sender, e) => this.LoadMatrixOnClick(sender, e, "matrix2"));
+            this.LoadMatrix2Button.Click += new System.EventHandler((sender, e) => this.LoadMatrixOnClick(sender, e, MatrixType.Matrix2));
             // 
             // label2
             // 
@@ -190,7 +190,7 @@
             this.Matrix2InputColumns.Size = new System.Drawing.Size(30, 22);
             this.Matrix2InputColumns.TabIndex = 6;
             this.Matrix2InputColumns.Text = "1";
-            this.Matrix2InputColumns.KeyUp += new System.Windows.Forms.KeyEventHandler((sender, e) => this.GenerateMatrixButtonOnKeyUp(sender, e, "matrix2"));
+            this.Matrix2InputColumns.KeyUp += new System.Windows.Forms.KeyEventHandler((sender, e) => this.GenerateMatrixButtonOnKeyUp(sender, e, MatrixType.Matrix2));
             // 
             // Matrix2InputRows
             // 
@@ -200,7 +200,7 @@
             this.Matrix2InputRows.Size = new System.Drawing.Size(30, 22);
             this.Matrix2InputRows.TabIndex = 6;
             this.Matrix2InputRows.Text = "1";
-            this.Matrix2InputRows.KeyUp += new System.Windows.Forms.KeyEventHandler((sender, e) => this.GenerateMatrixButtonOnKeyUp(sender, e, "matrix2"));
+            this.Matrix2InputRows.KeyUp += new System.Windows.Forms.KeyEventHandler((sender, e) => this.GenerateMatrixButtonOnKeyUp(sender, e, MatrixType.Matrix2));
             // 
             // Matrix2Columns
             // 
@@ -221,7 +221,7 @@
             this.GenerateMatrix2Button.TabIndex = 6;
             this.GenerateMatrix2Button.Text = "Generate checksums";
             this.GenerateMatrix2Button.UseVisualStyleBackColor = true;
-            this.GenerateMatrix2Button.Click += new System.EventHandler((sender, e) => this.GenerateChecksumsForMatrixButtonOnClick(sender, e, "matrix2"));
+            this.GenerateMatrix2Button.Click += new System.EventHandler((sender, e) => this.GenerateChecksumsForMatrixButtonOnClick(sender, e, MatrixType.Matrix2));
             // 
             // Matrix2Rows
             // 
