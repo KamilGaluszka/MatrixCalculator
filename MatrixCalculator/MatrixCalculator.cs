@@ -73,6 +73,10 @@ namespace MatrixCalculator
                 {
                     MessageBox.Show("The maximum size of the matrix must be " + _maxNumberOfRows + "x" + _maxNumberOfColumns);
                 }
+                else if (rows < 1 || columns < 1)
+                {
+                    MessageBox.Show("Matrix must not be less than 1x1");
+                }
                 else
                 {
                     ClearPanelFromInputs(panel, name, matrixName);
@@ -190,6 +194,10 @@ namespace MatrixCalculator
                 if (rows > _maxNumberOfRows || columns > _maxNumberOfColumns)
                 {
                     MessageBox.Show("The maximum size of the matrix must be 5x5");
+                }
+                else if (rows < 1 || columns < 1)
+                {
+                    MessageBox.Show("Matrix must not be less than 1x1");
                 }
                 else
                 {
@@ -386,15 +394,24 @@ namespace MatrixCalculator
             }
         }
 
-        private void LoadDataToMatrix(Matrix matrix, int rows, int columns, string[] data)
+        private bool LoadDataToMatrix(Matrix matrix, int rows, int columns, string[] data)
         {
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < columns; j++)
                 {
-                    matrix.MatrixTable[i, j] = int.Parse(data[i * columns + j + 2]);
+                    if(int.TryParse(data[i * columns + j + 2], out int value))
+                    {
+                        matrix.MatrixTable[i, j] = value;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Value is not a number");
+                        return false;
+                    }
                 }
             }
+            return true;
         }
 
         private void LoadMatrixOnClick(object sender, EventArgs e, MatrixType name)
@@ -419,6 +436,10 @@ namespace MatrixCalculator
                 {
                     MessageBox.Show("The maximum size of the matrix must be 5x5");
                 }
+                else if (rows < 1 || columns < 1)
+                {
+                    MessageBox.Show("Matrix must not be less than 1x1");
+                }
                 else
                 {
                     var inputRows = name == MatrixType.Matrix1 ? Matrix1InputRows : Matrix2InputRows;
@@ -429,12 +450,13 @@ namespace MatrixCalculator
 
                     matrix.resizeMatrix(rows, columns);
 
-                    LoadDataToMatrix(matrix, rows, columns, fileContent);
+                    if (LoadDataToMatrix(matrix, rows, columns, fileContent))
+                    {
+                        ClearPanelAndGenerateNewCheksums(matrix, panel, rows, columns, name, matrixName);
 
-                    ClearPanelAndGenerateNewCheksums(matrix, panel, rows, columns, name, matrixName);
-
-                    inputRows.Text = rows.ToString();
-                    inputColumns.Text = columns.ToString();
+                        inputRows.Text = rows.ToString();
+                        inputColumns.Text = columns.ToString();
+                    }
                 }
             }
             else
