@@ -52,6 +52,7 @@
             this.SaveResultButton = new System.Windows.Forms.Button();
             this.IncorrectHorizontalChecksumButton = new System.Windows.Forms.Button();
             this.IncorrectVerticalChecksumButton = new System.Windows.Forms.Button();
+            this.IncorrectRandomChecksumButton = new System.Windows.Forms.Button();
             this.fileMatrix = new System.Windows.Forms.OpenFileDialog();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -283,6 +284,7 @@
             this.panel4.Controls.Add(this.SaveResultButton);
             this.panel4.Controls.Add(this.IncorrectHorizontalChecksumButton);
             this.panel4.Controls.Add(this.IncorrectVerticalChecksumButton);
+            this.panel4.Controls.Add(this.IncorrectRandomChecksumButton);
             this.panel4.Location = new System.Drawing.Point(12, 368);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(776, 248);
@@ -302,7 +304,7 @@
             // IncorrectHorizontalChecksumButton
             // 
             this.IncorrectHorizontalChecksumButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.IncorrectHorizontalChecksumButton.Location = new System.Drawing.Point(666, 93);
+            this.IncorrectHorizontalChecksumButton.Location = new System.Drawing.Point(666, 66);
             this.IncorrectHorizontalChecksumButton.Name = "IncorrectHorizontalChecksumButton";
             this.IncorrectHorizontalChecksumButton.Size = new System.Drawing.Size(105, 54);
             this.IncorrectHorizontalChecksumButton.TabIndex = 9;
@@ -320,6 +322,17 @@
             this.IncorrectVerticalChecksumButton.Text = "Generate Incorrect Vertical Checksum";
             this.IncorrectVerticalChecksumButton.UseVisualStyleBackColor = true;
             this.IncorrectVerticalChecksumButton.Click += new System.EventHandler(this.IncorrectVerticalChecksumOnClick);
+            // 
+            // IncorrectRandomChecksumButton
+            // 
+            this.IncorrectRandomChecksumButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.IncorrectRandomChecksumButton.Location = new System.Drawing.Point(666, 129);
+            this.IncorrectRandomChecksumButton.Name = "IncorrectRandomChecksumButton";
+            this.IncorrectRandomChecksumButton.Size = new System.Drawing.Size(105, 54);
+            this.IncorrectRandomChecksumButton.TabIndex = 8;
+            this.IncorrectRandomChecksumButton.Text = "Generate Incorrect Random Checksum";
+            this.IncorrectRandomChecksumButton.UseVisualStyleBackColor = true;
+            this.IncorrectRandomChecksumButton.Click += new System.EventHandler(this.IncorrectRandomChecksumOnClick);
             // 
             // fileMatrix
             // 
@@ -374,5 +387,6 @@
         private System.Windows.Forms.Button IncorrectVerticalChecksumButton;
         private System.Windows.Forms.Button SaveResultButton;
         private System.Windows.Forms.Button IncorrectHorizontalChecksumButton;
+        private System.Windows.Forms.Button IncorrectRandomChecksumButton;
     }
 }

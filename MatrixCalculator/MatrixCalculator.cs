@@ -157,14 +157,13 @@ namespace MatrixCalculator
                     Control[] controls = panel.Controls.Find(name + j + "/" + i, true);
                     if (controls.Length > 0)
                     {
-                        double value;
-                        if (Double.TryParse(controls[0].Text, out value))
+                        if (Double.TryParse(controls[0].Text, out double value))
                         {
                             result += value;
                         }
                     }
                 }
-                Label label = new Label
+                var label = new Label
                 {
                     Name = name + "ChecksumVertical" + "0/" + i,
                     Size = new Size(30, 22)
@@ -238,6 +237,7 @@ namespace MatrixCalculator
                         if (controls.Length > 0)
                         {
                             controls[0].BackColor = Color.Red;
+                            controls[0].Text = result.VerticalCheckSum[j].ToString();
                         }
                         areEqual = false;
                     }
@@ -248,6 +248,7 @@ namespace MatrixCalculator
                     if (controls.Length > 0)
                     {
                         controls[0].BackColor = Color.Red;
+                        controls[0].Text = result.HorizontalCheckSum[i].ToString();
                     }
                     areEqual = false;
                 }
@@ -262,9 +263,11 @@ namespace MatrixCalculator
             {
                 for (int j = 0; j < columns; j++)
                 {
-                    Label temp = new Label();
-                    temp.Name = name + i + "/" + j;
-                    temp.Size = new Size(30, 22);
+                    Label temp = new Label
+                    {
+                        Name = name + i + "/" + j,
+                        Size = new Size(30, 22)
+                    };
                     temp.Location = new Point(60 + temp.Size.Width * j + j * 6, 60 + temp.Size.Height * i + i * 6);
                     temp.Text = matrix.MatrixTable[i, j].ToString();
                     temp.BorderStyle = BorderStyle.FixedSingle;
@@ -273,11 +276,13 @@ namespace MatrixCalculator
                 }
             }
 
-            Label label = new Label();
-            label.Name = matrixName;
-            label.Size = new Size(40, 180);
-            label.Location = new Point(0, panel1.Height / 3);
-            label.Text = matrixName;
+            Label label = new Label
+            {
+                Name = matrixName,
+                Size = new Size(40, 180),
+                Location = new Point(0, panel1.Height / 3),
+                Text = matrixName
+            };
             panel.Controls.Add(label);
         }
 
@@ -440,12 +445,46 @@ namespace MatrixCalculator
 
         private void IncorrectVerticalChecksumOnClick(object sender, EventArgs e)
         {
+            ClearPanelAndGenerateNewCheksums(_result, panel4, _result.Rows, _result.Columns, MatrixType.Result, "C =");
 
+            for(int i = 0; i < _result.Columns; i++)
+            {
+                _result.VerticalCheckSum[i]++;
+            }
+
+            if (CheckIfChecksumsAreEqual(_matrix1, _matrix2, _result, panel4, MatrixType.Result, false))
+                MessageBox.Show("Checksums are equal");
+            else
+                MessageBox.Show("Checksums are NOT equal");
         }
 
         private void IncorrectHorizontalChecksumOnClick(object sender, EventArgs e)
         {
+            ClearPanelAndGenerateNewCheksums(_result, panel4, _result.Rows, _result.Columns, MatrixType.Result, "C =");
 
+            for (int i = 0; i < _result.Rows; i++)
+            {
+                _result.HorizontalCheckSum[i]++;
+            }
+
+            if (CheckIfChecksumsAreEqual(_matrix1, _matrix2, _result, panel4, MatrixType.Result, false))
+                MessageBox.Show("Checksums are equal");
+            else
+                MessageBox.Show("Checksums are NOT equal");
+        }
+
+        private void IncorrectRandomChecksumOnClick(object sender, EventArgs e)
+        {
+            ClearPanelAndGenerateNewCheksums(_result, panel4, _result.Rows, _result.Columns, MatrixType.Result, "C =");
+
+            var random = new Random();
+            _result.VerticalCheckSum[random.Next(0, _result.Columns)]++;
+            _result.HorizontalCheckSum[random.Next(0, _result.Rows)]++;
+
+            if (CheckIfChecksumsAreEqual(_matrix1, _matrix2, _result, panel4, MatrixType.Result, false))
+                MessageBox.Show("Checksums are equal");
+            else
+                MessageBox.Show("Checksums are NOT equal");
         }
 
         private void SaveResultOnClick(object sender, EventArgs e)
