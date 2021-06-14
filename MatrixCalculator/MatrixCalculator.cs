@@ -102,7 +102,7 @@ namespace MatrixCalculator
             }
         }
 
-        private void SetValuesOfMatrixFromInputs(Matrix matrix, Panel panel, int rows, int columns, MatrixType name)
+        private bool SetValuesOfMatrixFromInputs(Matrix matrix, Panel panel, int rows, int columns, MatrixType name)
         {
             for (int i = 0; i < rows; i++)
             {
@@ -115,9 +115,16 @@ namespace MatrixCalculator
                         {
                             matrix.MatrixTable[i, j] = value;
                         }
+                        else
+                        {
+                            MessageBox.Show("Value is not a number");
+                            return false;
+                        }
                     }
                 }
             }
+
+            return true;
         }
 
         private void GenerateHorizontalChecksums(Matrix matrix, Panel panel, int rows, int columns, MatrixType name)
@@ -127,14 +134,7 @@ namespace MatrixCalculator
                 var result = 0d;
                 for (int j = 0; j < columns; j++)
                 {
-                    Control[] controls = panel.Controls.Find(name + i + "/" + j, true);
-                    if (controls.Length > 0)
-                    {
-                        if (Double.TryParse(controls[0].Text, out double value))
-                        {
-                            result += value;
-                        }
-                    }
+                    result += matrix.MatrixTable[i, j];
                 }
                 Label label = new Label
                 {
@@ -158,14 +158,7 @@ namespace MatrixCalculator
                 double result = 0;
                 for (int j = 0; j < rows; j++)
                 {
-                    Control[] controls = panel.Controls.Find(name + j + "/" + i, true);
-                    if (controls.Length > 0)
-                    {
-                        if (Double.TryParse(controls[0].Text, out double value))
-                        {
-                            result += value;
-                        }
-                    }
+                    result += matrix.MatrixTable[j, i];
                 }
                 var label = new Label
                 {
@@ -205,11 +198,12 @@ namespace MatrixCalculator
 
                     matrix.resizeMatrix(rows, columns);
 
-                    SetValuesOfMatrixFromInputs(matrix, panel, rows, columns, name);
+                    if(SetValuesOfMatrixFromInputs(matrix, panel, rows, columns, name))
+                    {
+                        GenerateVerticalChecksums(matrix, panel, rows, columns, name);
 
-                    GenerateVerticalChecksums(matrix, panel, rows, columns, name);
-
-                    GenerateHorizontalChecksums(matrix, panel, rows, columns, name);
+                        GenerateHorizontalChecksums(matrix, panel, rows, columns, name);
+                    }                    
                 }
             }
             else
