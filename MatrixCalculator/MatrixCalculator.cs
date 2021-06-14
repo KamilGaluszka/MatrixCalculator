@@ -198,10 +198,9 @@ namespace MatrixCalculator
 
                     matrix.resizeMatrix(rows, columns);
 
-                    if(SetValuesOfMatrixFromInputs(matrix, panel, rows, columns, name))
+                    if (SetValuesOfMatrixFromInputs(matrix, panel, rows, columns, name))
                     {
                         GenerateVerticalChecksums(matrix, panel, rows, columns, name);
-
                         GenerateHorizontalChecksums(matrix, panel, rows, columns, name);
                     }                    
                 }
@@ -390,6 +389,11 @@ namespace MatrixCalculator
 
         private bool LoadDataToMatrix(Matrix matrix, int rows, int columns, string[] data)
         {
+            if (data.Length < rows * columns + 2)
+            {
+                MessageBox.Show("Not enough numbers");
+                return false;
+            }
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < columns; j++)
